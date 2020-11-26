@@ -7,7 +7,9 @@ This is very basic structure, I"ll plan to make it less ugly and add user authen
 ```bash
 $ git clone https://github.com/Alexey-654/websites-response-checker.git
 ```
-
+```bash
+$ cd websites-response-checker
+```
 ```bash
 $ composer install
 ```
