@@ -5,7 +5,7 @@ This is very basic structure, I"ll plan to make it less ugly and add user authen
 
 ## Installation
 ```bash
-$ git clone https://github.com/Alexey-654/website-response-checker.git
+$ git clone https://github.com/Alexey-654/websites-response-checker.git
 ```
 
 ```bash
