@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\widgets\Pjax;
 use Carbon\Carbon;
 
@@ -11,24 +11,17 @@ $this->title = 'Проверить ваши сайты на доступност
 ?>
 
     <div class="row">
-
-    <?php if (Yii::$app->session->hasFlash('websitesFormSubmitted')) : ?>
-        <div class="alert alert-success">
-            Сайт успешно добавлен.
+        <div class="col">
+            <h1>А ваши сайты работают?</h1>
+            <p>
+                Добавьте ваши сайты и контролируйте их работоспособность.
+                Если сайт не будет отвечать, Вы получите уведомление на email.
+            </p>
         </div>
-    <?php endif; ?>
-
-    <?php if (Yii::$app->session->hasFlash('websiteDeleted')) : ?>
-        <div class="alert alert-info">
-            Сайт удален из списка отслеживаемых.
-        </div>
-    <?php endif; ?>
-
-    <h1>А ваши сайты работают?</h1>
-    <h2 class="h4">Добавьте ваши сайты и контролируйте их работоспособность</h2>
-    <p>Если сайт не будет отвечать, Вы получите уведомление на email.</p>
-        <div class="col-lg-5" style="padding: 3rem 0">
-
+    </div>
+    <div class="row">
+        <div class="col-lg-5 my-4">
+            <h2 class="h3">Форма отправки</h2>
             <?php $form = ActiveForm::begin(['id' => 'websites-checker-form', 'action' => "/websites-checker/store"]); ?>
                 <?= $form->field($model, 'name')->textInput()->label('Название сайта') ?>
                 <?= $form->field($model, 'url')->textInput()->label('Адрес сайта') ?>
@@ -36,41 +29,49 @@ $this->title = 'Проверить ваши сайты на доступност
                     <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
-
         </div>
     </div>
 
-    <div class="row">
-        <h2 class="h4">Результаты проверки -</h2>
-        <ul style="line-height: 2; font-size:larger">
-            <?php foreach ($websitesWithResponse as $site) : ?>
-                <li style="padding: 1rem 0">
-                    <?php Pjax::begin(); ?>
-                        <?= $site['name'] ?> -
-                        <a href="<?= $site['url'] ?>"><?= $site['url'] ?></a>
-                        <br>
-                        <?= Carbon::now('Europe/Moscow')->format('H:i') ?> ОТВЕТ -
-                        <?php if ($site['status'] === 200) : ?>
-                            <b><span class="text-success"><?= $site['status'] ?> <?= $site['reasonPhrase'] ?></span></b>
-                        <?php else : ?>
-                            <b><span class="text-danger"><?= $site['status'] ?> <?= $site['reasonPhrase'] ?> </span></b>
-                        <?php endif; ?>
-                        <?= Html::a("refresh", ['/websites-checker'], ['class' => 'btn hidden refreshButton', 'id' => 'refreshButton']) ?>
-                    <?php Pjax::end(); ?>
+    <div class="row mt-2">
+        <div class="col-12 col-lg-9">
+            <h2 class="h3">Результаты проверки -</h2>
 
-                        <?php $form = ActiveForm::begin(['action' => "/websites-checker/destroy"]); ?>
-                            <?= Html::hiddenInput('id', $site['id']) ?>
-                            <?= Html::submitButton('Удалить из списка', ['class' => 'btn btn-danger btn-sm']) ?>
-                        <?php ActiveForm::end(); ?>
+        <ul class ="list-group">
+            <?php foreach ($websitesWithResponse as $site) : ?>
+                <li class="list-group-item list-group-item-action">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <?php Pjax::begin(); ?>
+                                <?= $site['name'] ?> -
+                                <a href="<?= $site['url'] ?>"><?= $site['url'] ?></a>
+                                <span class="text-uppercase">
+                                    <?= Carbon::now('Europe/Moscow')->format('H:i') ?> ОТВЕТ -
+                                    <?php if ($site['status'] === 200) : ?>
+                                        <span class="badge badge-success"><?= $site['status'] ?></span> <?= $site['reasonPhrase'] ?>
+                                    <?php else : ?>
+                                        <span class="badge badge-danger"><?= $site['status'] ?></span> <?= $site['reasonPhrase'] ?>
+                                    <?php endif; ?>
+                                </span>
+                                <?= Html::a("refresh", ['/websites-checker'], ['class' => 'btn refreshButton d-none', 'id' => 'refreshButton']) ?>
+                            <?php Pjax::end(); ?>
+                        </div>
+                        <div class="col-auto">
+                            <?php $form = ActiveForm::begin(['class' => 'pt-5', 'layout' => 'inline', 'action' => '/websites-checker/destroy']); ?>
+                                <?= Html::hiddenInput('id', $site['id']) ?>
+                                <?= Html::submitButton('УДАЛИТЬ', ['class' => 'btn btn-danger btn-sm']) ?>
+                            <?php ActiveForm::end(); ?>
+                        </div>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>
+        </div>
     </div>
 
     <?php
     $script = <<< JS
     $(document).ready(function() {
-        setInterval(function(){ $(".refreshButton").click(); }, 120000);
+        setInterval(function(){ $(".refreshButton").click(); }, 520000);
     });
     JS;
     $this->registerJs($script);

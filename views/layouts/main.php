@@ -5,9 +5,8 @@
 
 use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
@@ -26,22 +25,21 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
+
+<?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+        // 'brandLabel' => Yii::$app->name,
+        'brandLabel' => Html::img('GitHub-Mark-Light-120px-plus.png', ['height' => '60px']),
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar navbar-expand-md navbar-dark bg-dark',
         ],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             // ['label' => 'Home', 'url' => ['/site/index']],
-            // ['label' => 'About', 'url' => ['/site/about']],
             // ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Websites-checker', 'url' => ['/websites-checker']],
+            ['label' => 'WEBSITES-CHECKER', 'url' => ['/websites-checker']],
             // Yii::$app->user->isGuest ? (
             //     ['label' => 'Login', 'url' => ['/site/login']]
             // ) : (
@@ -59,21 +57,16 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
+        <div class="container my-5">
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <a href="https://github.com/Alexey-654">Alex-654</a> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
+<footer class="py-4 bg-dark">
+  <div class="container">
+    <span class="text-muted">&copy; <a href="https://github.com/Alexey-654">Alex-654</a> <?= date('Y') ?></span>
+  </div>
 </footer>
 
 <?php $this->endBody() ?>

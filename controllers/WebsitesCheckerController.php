@@ -29,7 +29,7 @@ class WebsitesCheckerController extends Controller
         $model->name = $values['name'];
         $model->url = $values['url'];
         $model->save();
-        Yii::$app->session->setFlash('websitesFormSubmitted');
+        Yii::$app->session->setFlash('success', 'Сайт успешно добавлен.');
 
         return $this->redirect('/websites-checker');
     }
@@ -39,7 +39,7 @@ class WebsitesCheckerController extends Controller
         $request = \Yii::$app->request->post();
         $website = WebsitesChecker::findOne($request['id']);
         $website->delete();
-        Yii::$app->session->setFlash('websiteDeleted');
+        Yii::$app->session->setFlash('info', "Сайт удален из списка отслеживаемых");
 
         return $this->redirect('/websites-checker');
     }
