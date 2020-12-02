@@ -43,6 +43,7 @@ $config = [
         ],
     ],
     'params' => $params,
+    'name' => 'Uxcode',
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.

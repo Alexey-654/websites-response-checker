@@ -5,9 +5,9 @@
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 use yii\widgets\Pjax;
-use Carbon\Carbon;
 
-$this->title = 'Проверить ваши сайты на доступность';
+$this->title = 'Сервис проверки доступности сайтов';
+$this->registerMetaTag(['name' => 'description', 'content' => 'Сервис проверки доступности сайтов. Отправка email уведомления в случае некорректного ответа сервера'], 'description');
 ?>
 
     <div class="row">
@@ -15,14 +15,15 @@ $this->title = 'Проверить ваши сайты на доступност
             <h1>А ваши сайты работают?</h1>
             <p>
                 Добавьте ваши сайты и контролируйте их работоспособность.
-                Если сайт не будет отвечать, Вы получите уведомление на email.
+                <br>
+                Чтобы сохранить список сайтов и получать уведомление на email (если сайт не будет отвечать) необходимо зарегистрироваться.
             </p>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-5 my-4">
             <h2 class="h3">Форма отправки</h2>
-            <?php $form = ActiveForm::begin(['id' => 'websites-checker-form', 'action' => "/websites-checker/store"]); ?>
+            <?php $form = ActiveForm::begin(['id' => 'websites-checker-form', 'action' => '/website-checker/store']); ?>
                 <?= $form->field($model, 'name')->textInput()->label('Название сайта') ?>
                 <?= $form->field($model, 'url')->textInput()->label('Адрес сайта') ?>
                 <div class="form-group">
@@ -45,7 +46,7 @@ $this->title = 'Проверить ваши сайты на доступност
                                 <?= $site['name'] ?> -
                                 <a href="<?= $site['url'] ?>"><?= $site['url'] ?></a>
                                 <span class="text-uppercase">
-                                    <?= Carbon::now('Europe/Moscow')->format('H:i') ?> ОТВЕТ -
+                                    <?= $time ?> ОТВЕТ -
                                     <?php if ($site['status'] === 200) : ?>
                                         <span class="badge badge-success"><?= $site['status'] ?></span> <?= $site['reasonPhrase'] ?>
                                     <?php else : ?>
@@ -56,7 +57,7 @@ $this->title = 'Проверить ваши сайты на доступност
                             <?php Pjax::end(); ?>
                         </div>
                         <div class="col-auto">
-                            <?php $form = ActiveForm::begin(['class' => 'pt-5', 'layout' => 'inline', 'action' => '/websites-checker/destroy']); ?>
+                            <?php $form = ActiveForm::begin(['class' => 'pt-5', 'layout' => 'inline', 'action' => '/website-checker/destroy']); ?>
                                 <?= Html::hiddenInput('id', $site['id']) ?>
                                 <?= Html::submitButton('УДАЛИТЬ', ['class' => 'btn btn-danger btn-sm']) ?>
                             <?php ActiveForm::end(); ?>

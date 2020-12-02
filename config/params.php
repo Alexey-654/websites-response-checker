@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'adminEmail' => 'website-checker@uxcode.ru',
+    'adminEmail' => 'vianosenko@gmail.com',
     'senderEmail' => 'website-checker@uxcode.ru',
     'senderName' => 'Website Checker on Yii',
 ];

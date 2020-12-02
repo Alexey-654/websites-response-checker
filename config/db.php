@@ -1,6 +1,7 @@
 <?php
 
 $pathToDB = __DIR__ . "/../sqlite.db";
+
 return [
     "class" => "yii\db\Connection",
     "dsn" => "sqlite:$pathToDB"

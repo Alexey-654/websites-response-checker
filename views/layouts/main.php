@@ -11,6 +11,7 @@ use app\assets\AppAsset;
 
 AppAsset::register($this);
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -18,6 +19,12 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -28,32 +35,41 @@ AppAsset::register($this);
 
 <?php
     NavBar::begin([
-        // 'brandLabel' => Yii::$app->name,
-        'brandLabel' => Html::img('GitHub-Mark-Light-120px-plus.png', ['height' => '60px']),
+        'brandLabel' => Html::img('/GitHub-Mark-Light-120px-plus.png', ['height' => '60px']),
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-dark bg-dark',
         ],
+        'innerContainerOptions' => [
+            'class' => "container-fluid"
+        ]
     ]);
+
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav mr-auto'],
         'items' => [
-            // ['label' => 'Home', 'url' => ['/site/index']],
-            // ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'WEBSITES-CHECKER', 'url' => ['/websites-checker']],
-            // Yii::$app->user->isGuest ? (
-            //     ['label' => 'Login', 'url' => ['/site/login']]
-            // ) : (
-            //     '<li>'
-            //     . Html::beginForm(['/site/logout'], 'post')
-            //     . Html::submitButton(
-            //         'Logout (' . Yii::$app->user->identity->username . ')',
-            //         ['class' => 'btn btn-link logout']
-            //     )
-            //     . Html::endForm()
-            //     . '</li>'
-            // )
+            ['label' => 'WEBSITE-CHECKER', 'url' => ['/website-checker']],
         ],
     ]);
+
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav'],
+        'items' => [
+            Yii::$app->user->isGuest ? (
+                ['label' => 'Вход', 'url' => ['/site/login']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            ),
+            ['label' => 'Регистрация', 'url' => ['/site/sign-up']]
+        ],
+    ]);
+
     NavBar::end();
     ?>
 
@@ -64,7 +80,7 @@ AppAsset::register($this);
 
 
 <footer class="py-4 bg-dark">
-  <div class="container">
+  <div class="container-fluid">
     <span class="text-muted">&copy; <a href="https://github.com/Alexey-654">Alex-654</a> <?= date('Y') ?></span>
   </div>
 </footer>

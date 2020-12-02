@@ -9,7 +9,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
-use app\models\WebsitesChecker;
+use app\models\WebsiteChecker;
 use app\models\HttpWebsiteChecker;
 use Carbon\Carbon;
 
@@ -30,9 +30,11 @@ class WebsiteCheckerController extends Controller
      * @param string $message the message to be echoed.
      * @return int Exit code
      */
-    public function actionSendEmailOnBadResponse($emailTo = 'vianosenko@gmail.com')
+    public function actionSendEmailOnBadResponse($emailTo = null)
     {
-        $websites = WebsitesChecker::find()->orderBy(['id' => SORT_DESC])->asArray()->all();
+        $emailTo = $emailTo ?? \Yii::$app->params['adminEmail'];
+        $emailFrom = \Yii::$app->params['senderEmail'];
+        $websites = WebsiteChecker::find()->orderBy(['id' => SORT_DESC])->asArray()->all();
         $websitesWithResponse = (new HttpWebsiteChecker())->getStatusResponse($websites);
         $bodyMessageHelloPart = "Hello! \nYour websites have errors -";
         $responseErrors = [];
@@ -56,7 +58,7 @@ class WebsiteCheckerController extends Controller
         $finalMessage = $bodyMessageHelloPart . "\n" . \implode("\n", $responseErrors);
         if (!empty($responseErrors)) {
             \Yii::$app->mailer->compose()
-            ->setFrom('website-checker@uxcode.ru')
+            ->setFrom($emailFrom)
             ->setTo($emailTo)
             ->setSubject('Error report')
             ->setTextBody($finalMessage)
@@ -65,7 +67,7 @@ class WebsiteCheckerController extends Controller
 
         foreach ($websitesWithResponse as $website) {
             if ($website['status'] !== 200) {
-                $model = WebsitesChecker::findOne($website['id']);
+                $model = WebsiteChecker::findOne($website['id']);
                 $model->email_sended_at = date('c');
                 $model->save();
             }

@@ -63,6 +63,8 @@ $config = [
         ],
     ],
     'params' => $params,
+    'language' => 'ru-RU',
+    'name' => 'Uxcode',
 ];
 
 if (YII_ENV_DEV) {
